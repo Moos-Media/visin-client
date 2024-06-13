@@ -41,7 +41,7 @@ function drawGameControls() {
 }
 
 async function sendControl(tosend) {
-  const data = { userid: USERID, control: tosend };
+  const data = { userID: USERID, control: tosend };
   const options = {
     method: "POST",
     headers: {

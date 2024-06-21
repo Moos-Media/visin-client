@@ -19,16 +19,27 @@ h1 {
     width: 90%;
     margin-left: auto;
     margin-right: auto;
+    font-size: 50;
 
 }
-p {
+p{
     color: var(--color-font);
-    font-size: larger;
+    font-size: 35;
     text-align: center;
     width: 80%;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 5%;
+}
+
+ul, li {
+    color: var(--color-font);
+    font-size: 45;
+    width:100%;
+}
+
+li {
+    margin-left: 5%;
 }
 
 hr {
@@ -74,6 +85,14 @@ hr {
 
     margin-top: 10%;
     margin-bottom: 5%;
+}
+
+#buffer5 {
+    height: 5%;
+}
+
+#buffer10 {
+    height: 10%;
 }
 
 #buffer15 {

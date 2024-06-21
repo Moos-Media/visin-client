@@ -108,6 +108,84 @@ function drawStartScreen() {
   //Event Handlers
 
   btn1.mousePressed(drawGameSelectionScreen);
+  btn2.mousePressed(drawRuleScreen);
+}
+
+function drawRuleScreen() {
+  // Remove all previous Elements
+  removeElements();
+
+  //Create new Elements
+  let buffer = createElement("div");
+  let heading = createElement("h1", "4-Gewinnt: die Spielregeln");
+  let centerdiv = createElement("div");
+  let p1 = createElement("ul", "Anzahl Spieler: 2");
+  let p2 = createElement("ul", "Spielfeld: Rechteckig mit 7x6 Feldern");
+  let ul1 = createElement("ul", "Ablauf des Spiels:");
+  let li11 = createElement(
+    "li",
+    "Die Spielsteine werden von den beiden Spielern abwechselend in eine der Spalten geworfen."
+  );
+  let li12 = createElement(
+    "li",
+    "Der gesetzte Spielstein fällt bis in die letzte unbesetzte Zeile hindurch."
+  );
+
+  let li13 = createElement(
+    "li",
+    "Wenn in einer Spalte alle 6 Zeilen voll sind, kann dort kein Stein mehr hineingesetzt werden."
+  );
+
+  let ul2 = createElement("ul", "Ziel des Spiels:");
+  let li21 = createElement(
+    "li",
+    "Vier zusammenhängende Spielsteine im Gitter zu positionieren."
+  );
+  let li22 = createElement(
+    "li",
+    "Das ist entweder in der Vertikalen, Horizontalen oder auch in den Diagonalen möglich."
+  );
+
+  let ul3 = createElement("ul", "Ende des Spiels:");
+  let li31 = createElement(
+    "li",
+    "Ein Spieler hat 4 Steine in einer Reihe positioniert."
+  );
+  let li32 = createElement("li", "Alle Spielfelder sind befüllt.");
+
+  let cancel = createButton("Zurück");
+
+  //IDs
+  buffer.id("buffer5");
+  centerdiv.id("centerdiv");
+  heading.parent("centerdiv");
+  p1.parent("centerdiv");
+  p2.parent("centerdiv");
+
+  ul1.id("ul1");
+  ul1.parent("centerdiv");
+
+  li11.id("li");
+  li12.id("li");
+  li13.id("li");
+  li11.parent("ul1");
+  li12.parent("ul1");
+  li13.parent("ul1");
+
+  ul2.id("ul2");
+  ul2.parent("centerdiv");
+  li21.parent("ul2");
+  li22.parent("ul2");
+
+  ul3.id("ul3");
+  ul3.parent("centerdiv");
+  li31.parent("ul3");
+  li32.parent("ul3");
+  cancel.id("cancel-button");
+
+  //Event Handlers
+
+  cancel.mousePressed(drawStartScreen);
 }
 
 function drawGameSelectionScreen() {

@@ -2,17 +2,16 @@ let CURRENTGAME = "VIERGEWINNT";
 let USERID = -99;
 let LASTKEY = "";
 
-function preload() {
-  loadImage("../thmlogo.png");
-}
+function preload() {}
 
 function setup() {
   noCanvas();
   registerWithServer();
   //DEPRECATED_drawGameControls();
-  drawStartScreen();
+  //drawStartScreen();
   //drawGameSelectionScreen();
   //drawColorSelectionScreen();
+  drawGameResult("LOSS");
 }
 
 function draw() {}
@@ -267,4 +266,68 @@ function drawColorSelectionScreen() {
 
   //Event Handlers
   cancel.mousePressed(drawStartScreen);
+}
+
+function drawGameResult(result) {
+  // Remove all previous Elements
+  removeElements();
+
+  //Create new Elements
+  let centerdiv = createElement("div");
+  centerdiv.id("centerdiv");
+
+  let headingtext = "";
+  let p1text = "";
+  if (result == "LOSS") {
+    headingtext = "Leider verloren.";
+    p1text = "Schade! Vielleicht klappt es ja beim nächsten Mal!";
+  } else if (result == "DRAW") {
+    headingtext = "Unentschieden!";
+    p1text =
+      "Ihr seid zwei richtig gute Spieler! Wenn ihr möchtet, könnt ihr gerne erneut spielen, oder ihr überlasst das Spielfeld den nähsten Studis. Viel Spaß!";
+  } else if (result == "WIN") {
+    headingtext = "Herzlichen Glückwunsch!";
+    p1text = "Deine Belohnung: ein THM-Meme.";
+  }
+  let buffer = createElement("div");
+  let heading = createElement("h1", headingtext);
+  let p1 = createElement("p", p1text);
+
+  buffer.parent("centerdiv");
+  heading.parent("centerdiv");
+  p1.parent("centerdiv");
+
+  if (result == "LOSS") {
+    let img = createImg("../loss.png");
+    img.parent("centerdiv");
+    img.id("logo");
+  } else if (result == "WIN") {
+    let img = createImg("../win.png");
+    img.parent("centerdiv");
+    img.id("logo");
+  } else if (result == "DRAW") {
+    let btn1 = createButton("Neustart");
+    let btn2 = createButton("Beenden");
+
+    btn1.id("my-button");
+    btn2.id("my-button");
+
+    btn1.parent("centerdiv");
+    btn2.parent("centerdiv");
+
+    btn1.mousePressed(drawColorSelectionScreen);
+    btn2.mousePressed(drawStartScreen);
+  } else {
+  }
+
+  let p2 = createElement(
+    "p",
+    "Falls du Feedback oder Verbesserungsvorschläge zu unserem Projekt und dem Spiel hast, melde dich gerne bei uns unter: <a href=mailto:sekretariat-gi@muk.thm.de>sekretariat-gi@muk.thm.de</a>"
+  );
+
+  p2.parent("centerdiv");
+
+  //add IDs
+
+  buffer.id("buffer15");
 }

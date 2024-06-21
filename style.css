@@ -1,0 +1,123 @@
+html {
+    --color-thm-green: rgb(128, 186, 36);
+    --color-thm-grey: rgb(74, 92, 102);
+    --color-lightgrey: rgb(211, 211, 211);
+    --color-background: #ff;
+    --color-font: #00;
+    --color-col1: #186ba2;
+    --color-col2: #c01111;
+    --color-col3: #dfb234;
+    --color-col4: #d8317f;
+    --color-col5: #e6662f;
+    --color-col6: #00b8ac;
+
+}
+
+h1 {
+    color: var(--color-font);
+    text-align: center;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+p {
+    color: var(--color-font);
+    font-size: larger;
+    text-align: center;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 5%;
+}
+
+hr {
+    margin: 10%;
+}
+
+#my-button {
+    width: 80%;
+    height: 10%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+    font-size: 3.75em;
+
+    color: var(--color-font);
+    background-color: var(--color-lightgrey);
+    border-width: 5px;
+    border-color: var(--color-thm-green);
+    border-radius: 25px;
+}
+#cancel-button {
+    position: fixed;
+    width: 40%;
+    height: 10%;
+    display: block;
+    margin-left: auto;
+    bottom: 0%;
+    right: 0%;
+    font-size: 2.5em;
+
+    color: black;
+    background-color: var(--color-background);
+    border-width: 0;
+
+}
+
+#logo{
+    width: 50%;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+
+    margin-top: 10%;
+    margin-bottom: 5%;
+}
+
+#buffer15 {
+    height: 15%;
+}
+
+#buffer20 {
+    height: 20%;
+}
+
+#centerdiv {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.col-button {
+    width: 30%;
+    height: 0;
+    margin: 10%;
+    padding-bottom: 30%;
+    border-radius: 25px;
+}
+
+#col-button-1 {
+    background-color: var(--color-col1);
+}
+
+#col-button-2 {
+    background-color: var(--color-col2);
+}
+
+#col-button-3 {
+    background-color: var(--color-col3);
+}
+
+#col-button-4 {
+    background-color: var(--color-col4);
+}
+
+#col-button-5 {
+    background-color: var(--color-col5);
+}
+
+#col-button-6 {
+    background-color: var(--color-col6);
+}

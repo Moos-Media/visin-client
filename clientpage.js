@@ -1,6 +1,7 @@
 let CURRENTGAME = "VIERGEWINNT";
 let USERID = -99;
 let LASTKEY = "";
+let SESSIONID = 12345;
 
 function preload() {}
 
@@ -11,7 +12,8 @@ function setup() {
   //drawStartScreen();
   //drawGameSelectionScreen();
   //drawColorSelectionScreen();
-  drawGameResult("LOSS");
+  //drawGameResult("LOSS");
+  drawCodeInput("IN");
 }
 
 function draw() {}
@@ -330,4 +332,67 @@ function drawGameResult(result) {
   //add IDs
 
   buffer.id("buffer15");
+}
+
+function drawCodeInput(dir) {
+  let centerdiv = createElement("div");
+  centerdiv.id("centerdiv");
+
+  let buffer = createElement("div");
+  buffer.id("buffer20");
+  buffer.parent("centerdiv");
+
+  let text = "";
+  if (dir == "OUT") {
+    text =
+      "Gib den folgenden Code an dein:e Freund:in weiter. Diese:r muss auf dem vorherigen Fenster &qout; mit einem Code beitreten &qout; auswählen und kann dann Deinen Code eingeben.";
+  } else if (dir == "IN") {
+    text = "Gib unten den Code von Spieler 1 ein.";
+  }
+
+  let p = createElement("p", text);
+  p.parent("centerdiv");
+
+  let i1 = createInput("", "number");
+  let i2 = createInput("", "number");
+  let i3 = createInput("", "number");
+  let i4 = createInput("", "number");
+  let i5 = createInput("", "number");
+
+  i1.parent("centerdiv");
+  i2.parent("centerdiv");
+  i3.parent("centerdiv");
+  i4.parent("centerdiv");
+  i5.parent("centerdiv");
+
+  i1.attribute("maxlength", "1");
+  i2.attribute("maxlength", "1");
+  i3.attribute("maxlength", "1");
+  i4.attribute("maxlength", "1");
+  i5.attribute("maxlength", "1");
+
+  i1.attribute(
+    "oninput",
+    'javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); document.activeElement.dispatchEvent(new KeyboardEvent("keypress", { key: "Tab"}));'
+  );
+  i2.attribute(
+    "oninput",
+    "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+  );
+  i3.attribute(
+    "oninput",
+    "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+  );
+  i4.attribute(
+    "oninput",
+    "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+  );
+  i5.attribute(
+    "oninput",
+    "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+  );
+
+  let cancel = createButton("Spielabbruch");
+  cancel.id("cancel-button");
+  cancel.parent("centerdiv");
 }

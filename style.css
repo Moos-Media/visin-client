@@ -46,6 +46,15 @@ hr {
     margin: 10%;
 }
 
+input {
+    width: 14%;
+    margin-left: 3%;
+    margin-right: 3%;
+    height: 0;
+    padding-bottom: 14%;
+    font-size: 30;
+}
+
 #my-button {
     width: 80%;
     height: 10%;

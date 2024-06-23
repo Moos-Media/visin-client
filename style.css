@@ -47,15 +47,16 @@ hr {
 }
 
 input {
-    width: 14%;
-    margin-left: 3%;
-    margin-right: 3%;
-    height: 0;
-    padding-bottom: 14%;
-    font-size: 30;
+    display: block;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 150;
+    font-size: 120;
+    text-align: center;
 }
 
-#my-button {
+#my-button, #LEFTBTN, #RIGHTBTN, #DOWNBTN {
     width: 80%;
     height: 10%;
     display: block;
@@ -70,6 +71,20 @@ input {
     border-color: var(--color-thm-green);
     border-radius: 25px;
 }
+
+#LEFTBTN, #RIGHTBTN, #DOWNBTN {
+    background-color: var(--color-col6);
+    border-color: #000;
+    height: 400;
+    width: 100%;
+    margin-top: 0;
+}
+
+#LEFTBTN, #RIGHTBTN {
+    width: 50%;
+    display: inline-block;
+}
+
 #cancel-button {
     position: fixed;
     width: 40%;

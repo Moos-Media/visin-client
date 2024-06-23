@@ -9,11 +9,11 @@ function setup() {
   noCanvas();
   registerWithServer();
   //DEPRECATED_drawGameControls();
-  //drawStartScreen();
+  drawStartScreen();
   //drawGameSelectionScreen();
   //drawColorSelectionScreen();
   //drawGameResult("LOSS");
-  drawCodeInput("IN");
+  //drawCodeInput("IN");
 }
 
 function draw() {}
@@ -122,7 +122,7 @@ function drawRuleScreen() {
   let centerdiv = createElement("div");
   let p1 = createElement("ul", "Anzahl Spieler: 2");
   let p2 = createElement("ul", "Spielfeld: Rechteckig mit 7x6 Feldern");
-  let ul1 = createElement("ul", "Ablauf des Spiels:");
+  let ul1 = createElement("ul", "<u>Ablauf des Spiels:</u>");
   let li11 = createElement(
     "li",
     "Die Spielsteine werden von den beiden Spielern abwechselend in eine der Spalten geworfen."
@@ -137,7 +137,7 @@ function drawRuleScreen() {
     "Wenn in einer Spalte alle 6 Zeilen voll sind, kann dort kein Stein mehr hineingesetzt werden."
   );
 
-  let ul2 = createElement("ul", "Ziel des Spiels:");
+  let ul2 = createElement("ul", "<u>Ziel des Spiels:</u>");
   let li21 = createElement(
     "li",
     "Vier zusammenhängende Spielsteine im Gitter zu positionieren."
@@ -147,7 +147,7 @@ function drawRuleScreen() {
     "Das ist entweder in der Vertikalen, Horizontalen oder auch in den Diagonalen möglich."
   );
 
-  let ul3 = createElement("ul", "Ende des Spiels:");
+  let ul3 = createElement("ul", "<u>Ende des Spiels:</u>");
   let li31 = createElement(
     "li",
     "Ein Spieler hat 4 Steine in einer Reihe positioniert."
@@ -212,8 +212,12 @@ function drawGameSelectionScreen() {
   btn4.id("my-button");
   cancel.id("cancel-button");
 
-  btn1.mousePressed(drawColorSelectionScreen);
-  btn2.mousePressed(drawColorSelectionScreen);
+  btn1.mousePressed(() => {
+    drawCodeInput("OUT");
+  });
+  btn2.mousePressed(() => {
+    drawCodeInput("IN");
+  });
   btn3.mousePressed(drawColorSelectionScreen);
   btn4.mousePressed(drawColorSelectionScreen);
   cancel.mousePressed(drawStartScreen);
@@ -335,17 +339,18 @@ function drawGameResult(result) {
 }
 
 function drawCodeInput(dir) {
+  removeElements();
   let centerdiv = createElement("div");
   centerdiv.id("centerdiv");
 
   let buffer = createElement("div");
-  buffer.id("buffer20");
+  buffer.id("buffer15");
   buffer.parent("centerdiv");
 
   let text = "";
   if (dir == "OUT") {
     text =
-      "Gib den folgenden Code an dein:e Freund:in weiter. Diese:r muss auf dem vorherigen Fenster &qout; mit einem Code beitreten &qout; auswählen und kann dann Deinen Code eingeben.";
+      'Gib den folgenden Code an dein:e Freund:in weiter. Diese:r muss auf dem vorherigen Fenster "mit einem Code beitreten" auswählen und kann dann Deinen Code eingeben.';
   } else if (dir == "IN") {
     text = "Gib unten den Code von Spieler 1 ein.";
   }
@@ -353,46 +358,71 @@ function drawCodeInput(dir) {
   let p = createElement("p", text);
   p.parent("centerdiv");
 
-  let i1 = createInput("", "number");
-  let i2 = createInput("", "number");
-  let i3 = createInput("", "number");
-  let i4 = createInput("", "number");
-  let i5 = createInput("", "number");
+  let codeInput = createInput("", "number");
 
-  i1.parent("centerdiv");
-  i2.parent("centerdiv");
-  i3.parent("centerdiv");
-  i4.parent("centerdiv");
-  i5.parent("centerdiv");
+  codeInput.parent("centerdiv");
 
-  i1.attribute("maxlength", "1");
-  i2.attribute("maxlength", "1");
-  i3.attribute("maxlength", "1");
-  i4.attribute("maxlength", "1");
-  i5.attribute("maxlength", "1");
+  codeInput.attribute("maxlength", "5");
 
-  i1.attribute(
+  codeInput.attribute(
     "oninput",
-    'javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); document.activeElement.dispatchEvent(new KeyboardEvent("keypress", { key: "Tab"}));'
+    "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength)"
   );
-  i2.attribute(
-    "oninput",
-    "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-  );
-  i3.attribute(
-    "oninput",
-    "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-  );
-  i4.attribute(
-    "oninput",
-    "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-  );
-  i5.attribute(
-    "oninput",
-    "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-  );
+
+  if (dir == "IN") {
+    let submit = createButton("Beitreten");
+    submit.id("my-button");
+    submit.parent("centerdiv");
+    submit.mousePressed(drawGameControls);
+  } else if (dir == "OUT") {
+    codeInput.value(SESSIONID);
+  }
 
   let cancel = createButton("Spielabbruch");
   cancel.id("cancel-button");
   cancel.parent("centerdiv");
+  cancel.mousePressed(drawStartScreen);
+}
+
+function drawGameControls() {
+  removeElements();
+
+  let centerdiv = createElement("div");
+  centerdiv.id("centerdiv");
+
+  let buffer1 = createElement("div");
+  buffer1.id("buffer5");
+  buffer1.parent("centerdiv");
+
+  let text = createElement(
+    "p",
+    "<b>Los geht's!</b> Bewege deinen Stein in der Reihe mit den Pfeiltasten hin und her und beobachte, was auf der Wand passiert. Sobald du die passende Spalte gefunden hast, in der du deinen Stein setzen willst, lasse ihn Fallen. Pro Spielzug hast du XX sec. Zeit dich zu entscheiden."
+  );
+  text.parent("centerdiv");
+
+  let line = createElement("hr");
+  line.parent("centerdiv");
+
+  let time = createElement("p", "Verbleibende Zeit: XX");
+  time.parent("centerdiv");
+
+  let buffer2 = createElement("div");
+  buffer2.id("buffer5");
+  buffer2.parent("centerdiv");
+
+  let btnParent = createElement("div");
+  btnParent.parent("centerdiv");
+  btnParent.id("btnparent");
+
+  let leftBtn = createButton("<-");
+  leftBtn.id("LEFTBTN");
+  leftBtn.parent("btnparent");
+
+  let rightBtn = createButton("->");
+  rightBtn.id("RIGHTBTN");
+  rightBtn.parent("btnparent");
+
+  let downBtn = createButton("Down");
+  downBtn.id("DOWNBTN");
+  downBtn.parent("centerdiv");
 }

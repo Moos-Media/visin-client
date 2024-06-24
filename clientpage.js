@@ -1,7 +1,7 @@
 let CURRENTGAME = "VIERGEWINNT";
 let USERID = -99;
 let LASTKEY = "";
-let SESSIONID = 12345;
+let SESSIONID = -99999;
 var socket;
 
 function preload() {}
@@ -9,79 +9,19 @@ function preload() {}
 function setup() {
   noCanvas();
   socket = io.connect();
-  registerWithServer();
-  //DEPRECATED_drawGameControls();
-  //drawStartScreen();
+
+  drawStartScreen();
   //drawGameSelectionScreen();
   //drawColorSelectionScreen();
   //drawGameResult("LOSS");
   //drawCodeInput("IN");
-  drawGameControls();
+  //drawGameControls();
 }
 
 function draw() {}
 
-function DEPRECATED_drawGameControls() {
-  switch (CURRENTGAME) {
-    case "VIERGEWINNT":
-      // Create Controls
-      let left = createButton("Links");
-      left.size(250, 250);
-      let down = createButton("Fallen lassen");
-      down.size(250, 250);
-      let right = createButton("Rechts");
-      right.size(250, 250);
-
-      //Event Handlers
-      left.mousePressed(() => {
-        sendControl("LEFT");
-      });
-      down.mousePressed(() => {
-        sendControl("DOWN");
-      });
-      right.mousePressed(() => {
-        sendControl("RIGHT");
-      });
-      break;
-
-    default:
-      break;
-  }
-}
-
-async function sendControl(tosend) {
-  // const data = { userID: USERID, control: tosend };
-  // const options = {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify(data),
-  // };
-
-  // const response = await fetch("/api/client/sendControl", options);
-  // const json = await response.json();
-  // if (json.status == "success") console.log("Success");
-  console.log("In der funciton");
+function sendControl(tosend) {
   socket.emit("/api/client/sendControl", { control: tosend });
-}
-
-async function registerWithServer() {
-  let key = random(100, 1000);
-  const data = { userKey: key };
-  const options = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  };
-
-  const response = await fetch("/api/client/registerClient", options);
-  const json = await response.json();
-  if (json.status == "success") {
-    USERID = json.userID;
-  }
 }
 
 function drawStartScreen() {

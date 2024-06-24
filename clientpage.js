@@ -163,6 +163,14 @@ function drawGameSelectionScreen() {
   let btn1 = createButton("Freund:in");
   btn1.id("my-button");
   btn1.parent("centerdiv");
+  btn1.mousePressed(() => {
+    socket.emit("/api/client/startSession", (response) => {
+      if (response.status == "success") {
+        SESSIONID = response.sessionID;
+        drawCodeInput("OUT");
+      }
+    });
+  });
 
   let btn2 = createButton("Mit einem Code beitreten");
   btn2.id("my-button");
@@ -182,9 +190,6 @@ function drawGameSelectionScreen() {
 
   //Event Handlers
 
-  btn1.mousePressed(() => {
-    drawCodeInput("OUT");
-  });
   btn2.mousePressed(() => {
     drawCodeInput("IN");
   });

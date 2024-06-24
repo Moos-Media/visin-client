@@ -2,18 +2,21 @@ let CURRENTGAME = "VIERGEWINNT";
 let USERID = -99;
 let LASTKEY = "";
 let SESSIONID = 12345;
+var socket;
 
 function preload() {}
 
 function setup() {
   noCanvas();
+  socket = io.connect();
   registerWithServer();
   //DEPRECATED_drawGameControls();
-  drawStartScreen();
+  //drawStartScreen();
   //drawGameSelectionScreen();
   //drawColorSelectionScreen();
   //drawGameResult("LOSS");
   //drawCodeInput("IN");
+  drawGameControls();
 }
 
 function draw() {}
@@ -47,18 +50,20 @@ function DEPRECATED_drawGameControls() {
 }
 
 async function sendControl(tosend) {
-  const data = { userID: USERID, control: tosend };
-  const options = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  };
+  // const data = { userID: USERID, control: tosend };
+  // const options = {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify(data),
+  // };
 
-  const response = await fetch("/api/client/sendControl", options);
-  const json = await response.json();
-  if (json.status == "success") console.log("Success");
+  // const response = await fetch("/api/client/sendControl", options);
+  // const json = await response.json();
+  // if (json.status == "success") console.log("Success");
+  console.log("In der funciton");
+  socket.emit("/api/client/sendControl", { control: tosend });
 }
 
 async function registerWithServer() {
@@ -442,14 +447,23 @@ function drawGameControls() {
   let leftBtn = createButton("←");
   leftBtn.id("LEFTBTN");
   leftBtn.parent("btnparent");
+  leftBtn.mousePressed(() => {
+    sendControl("LEFT");
+  });
 
   let rightBtn = createButton("→");
   rightBtn.id("RIGHTBTN");
   rightBtn.parent("btnparent");
+  rightBtn.mousePressed(() => {
+    sendControl("RIGHT");
+  });
 
   let downBtn = createButton("↓");
   downBtn.id("DOWNBTN");
   downBtn.parent("centerdiv");
+  downBtn.mousePressed(() => {
+    sendControl("DOWN");
+  });
 
   let cancel = createButton("Spielabbruch");
   cancel.id("cancel-button");

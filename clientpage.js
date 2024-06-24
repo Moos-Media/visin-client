@@ -84,27 +84,38 @@ function drawStartScreen() {
   removeElements();
 
   //Create new Elements
+  let centerdiv = createElement("div");
+  centerdiv.id("centerdiv");
+
   let logo = createImg("../thmlogo.png");
+  logo.id("logo");
+  logo.parent("centerdiv");
+
   let heading = createElement("h1", "Herzlich willkommen!");
+  heading.parent("centerdiv");
+
   let p1 = createElement(
     "p",
     "Auf dieser Seite hast du die Möglichkeit 4-Gewinnt auf der Hausfassade des A10 zu spielen!"
   );
+  p1.parent("centerdiv");
 
   let p2 = createElement(
     "p",
     "Entwickelt wurde das Projekt vom Masterstudiengang Strategische Live Kommunikation. Wir wünschen euch viel Spaß beim Ausprobieren und Spielen!"
   );
+  p2.parent("centerdiv");
 
   let line = createElement("hr");
+  line.parent("centerdiv");
 
   let btn1 = createButton("Weiter");
-  let btn2 = createButton("Spielregeln");
-
-  //add IDs
-  logo.id("logo");
   btn1.id("my-button");
+  btn1.parent("centerdiv");
+
+  let btn2 = createButton("Spielregeln");
   btn2.id("my-button");
+  btn2.parent("centerdiv");
 
   //Event Handlers
 
@@ -194,23 +205,37 @@ function drawGameSelectionScreen() {
   removeElements();
 
   //Create new Elements
+  let centerdiv = createElement("div");
+  centerdiv.id("centerdiv");
+
   let buffer = createElement("div");
+  buffer.id("buffer20");
+  buffer.parent("centerdiv");
+
   let heading = createElement("h1", "Wähle einen Gegner aus!");
+  heading.parent("centerdiv");
 
   let btn1 = createButton("Freund:in");
+  btn1.id("my-button");
+  btn1.parent("centerdiv");
+
   let btn2 = createButton("Mit einem Code beitreten");
+  btn2.id("my-button");
+  btn2.parent("centerdiv");
+
   let btn3 = createButton("Zufälliger Spieler");
+  btn3.id("my-button");
+  btn3.parent("centerdiv");
+
   let btn4 = createButton("Bot");
+  btn4.id("my-button");
+  btn4.parent("centerdiv");
 
   let cancel = createButton("Spielabbruch");
-
-  //add IDs
-  buffer.id("buffer20");
-  btn1.id("my-button");
-  btn2.id("my-button");
-  btn3.id("my-button");
-  btn4.id("my-button");
   cancel.id("cancel-button");
+  cancel.parent("centerdiv");
+
+  //Event Handlers
 
   btn1.mousePressed(() => {
     drawCodeInput("OUT");
@@ -326,12 +351,12 @@ function drawGameResult(result) {
   } else {
   }
 
-  let p2 = createElement(
-    "p",
-    "Falls du Feedback oder Verbesserungsvorschläge zu unserem Projekt und dem Spiel hast, melde dich gerne bei uns unter: <a href=mailto:sekretariat-gi@muk.thm.de>sekretariat-gi@muk.thm.de</a>"
-  );
+  // let p2 = createElement(
+  //   "p",
+  //   "Falls du Feedback oder Verbesserungsvorschläge zu unserem Projekt und dem Spiel hast, melde dich gerne bei uns unter: <a href=mailto:sekretariat-gi@muk.thm.de>sekretariat-gi@muk.thm.de</a>"
+  // );
 
-  p2.parent("centerdiv");
+  // p2.parent("centerdiv");
 
   //add IDs
 
@@ -414,15 +439,20 @@ function drawGameControls() {
   btnParent.parent("centerdiv");
   btnParent.id("btnparent");
 
-  let leftBtn = createButton("<-");
+  let leftBtn = createButton("←");
   leftBtn.id("LEFTBTN");
   leftBtn.parent("btnparent");
 
-  let rightBtn = createButton("->");
+  let rightBtn = createButton("→");
   rightBtn.id("RIGHTBTN");
   rightBtn.parent("btnparent");
 
-  let downBtn = createButton("Down");
+  let downBtn = createButton("↓");
   downBtn.id("DOWNBTN");
   downBtn.parent("centerdiv");
+
+  let cancel = createButton("Spielabbruch");
+  cancel.id("cancel-button");
+  cancel.parent("centerdiv");
+  cancel.mousePressed(drawStartScreen);
 }

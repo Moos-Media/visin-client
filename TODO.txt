@@ -1,0 +1,3 @@
+Spielregeln als Slide-Over
+Seitenübergänge
+Push to History

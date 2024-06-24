@@ -348,7 +348,13 @@ function drawCodeInput(dir) {
     let submit = createButton("Beitreten");
     submit.id("my-button");
     submit.parent("centerdiv");
-    submit.mousePressed(drawGameControls);
+    submit.mousePressed(() => {
+      socket.emit("/api/client/joinSession", codeInput.value(), (response) => {
+        if (response.status == "success") {
+          drawColorSelectionScreen();
+        }
+      });
+    });
   } else if (dir == "OUT") {
     codeInput.value(SESSIONID);
   }

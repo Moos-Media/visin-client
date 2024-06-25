@@ -166,3 +166,7 @@ input {
 #col-button-6 {
     background-color: var(--color-col6);
 }
+
+#col-blocked {
+    background-color: lightgrey;
+}

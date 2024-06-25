@@ -1,5 +1,5 @@
 let CURRENTGAME = "VIERGEWINNT";
-let USERID = -99;
+let PLAYERID = -99;
 let LASTKEY = "";
 let SESSIONID = -99999;
 var socket;
@@ -10,8 +10,8 @@ function setup() {
   noCanvas();
   socket = io.connect();
 
-  drawStartScreen();
-  //drawGameSelectionScreen();
+  //drawStartScreen();
+  drawGameSelectionScreen();
   //drawColorSelectionScreen();
   //drawGameResult("LOSS");
   //drawCodeInput("IN");
@@ -22,6 +22,11 @@ function draw() {}
 
 function sendControl(tosend) {
   socket.emit("/api/client/sendControl", { control: tosend });
+}
+
+function sendColor(toSend) {
+  console.log("In der Handler Funktion");
+  socket.emit("/api/client/colorSelected", SESSIONID, PLAYERID, toSend);
 }
 
 function drawStartScreen() {
@@ -164,6 +169,7 @@ function drawGameSelectionScreen() {
   btn1.id("my-button");
   btn1.parent("centerdiv");
   btn1.mousePressed(() => {
+    PLAYERID = 0;
     socket.emit("/api/client/startSession", (response) => {
       if (response.status == "success") {
         SESSIONID = response.sessionID;
@@ -191,6 +197,7 @@ function drawGameSelectionScreen() {
   //Event Handlers
 
   btn2.mousePressed(() => {
+    PLAYERID = 1;
     drawCodeInput("IN");
   });
   btn3.mousePressed(drawColorSelectionScreen);
@@ -247,6 +254,50 @@ function drawColorSelectionScreen() {
 
   //Event Handlers
   cancel.mousePressed(drawStartScreen);
+
+  btn1.mousePressed(() => {
+    sendColor("COLOR1");
+  });
+  btn2.mousePressed(() => {
+    sendColor("COLOR2");
+  });
+  btn3.mousePressed(() => {
+    sendColor("COLOR3");
+  });
+  btn4.mousePressed(() => {
+    sendColor("COLOR4");
+  });
+  btn5.mousePressed(() => {
+    sendColor("COLOR5");
+  });
+  btn6.mousePressed(() => {
+    sendColor("COLOR6");
+  });
+
+  socket.on("color-blocked", (colorCode) => {
+    switch (colorCode) {
+      case "COLOR1":
+        btn1.id("col-blocked");
+        break;
+      case "COLOR2":
+        btn2.id("col-blocked");
+        break;
+      case "COLOR3":
+        btn3.id("col-blocked");
+        break;
+      case "COLOR4":
+        btn4.id("col-blocked");
+        break;
+      case "COLOR5":
+        btn5.id("col-blocked");
+        break;
+      case "COLOR6":
+        btn6.id("col-blocked");
+        break;
+      default:
+        break;
+    }
+  });
 }
 
 function drawGameResult(result) {
@@ -351,6 +402,8 @@ function drawCodeInput(dir) {
     submit.mousePressed(() => {
       socket.emit("/api/client/joinSession", codeInput.value(), (response) => {
         if (response.status == "success") {
+          SESSIONID = codeInput.value();
+          console.log("Session ID: " + SESSIONID);
           drawColorSelectionScreen();
         }
       });

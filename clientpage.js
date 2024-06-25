@@ -325,7 +325,7 @@ function drawCodeInput(dir) {
   let text = "";
   if (dir == "OUT") {
     text =
-      'Gib den folgenden Code an dein:e Freund:in weiter. Diese:r muss auf dem vorherigen Fenster "mit einem Code beitreten" auswählen und kann dann Deinen Code eingeben.';
+      'Gib den folgenden Code an dein:e Freund:in weiter. Diese:r muss auf dem vorherigen Fenster "mit einem Code beitreten" auswählen und kann dann diesen Code eingeben.';
   } else if (dir == "IN") {
     text = "Gib unten den Code von Spieler 1 ein.";
   }
@@ -357,6 +357,9 @@ function drawCodeInput(dir) {
     });
   } else if (dir == "OUT") {
     codeInput.value(SESSIONID);
+    socket.on("playerjoined", () => {
+      drawColorSelectionScreen();
+    });
   }
 
   let cancel = createButton("Spielabbruch");

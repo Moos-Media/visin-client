@@ -58,7 +58,7 @@ input {
     text-align: center;
 }
 
-#my-button, #LEFTBTN, #RIGHTBTN, #DOWNBTN {
+#my-button, .LEFTBTN, .RIGHTBTN, .DOWNBTN {
     width: 100%;
     height: 120;
     display: block;
@@ -73,7 +73,7 @@ input {
     border-radius: 25px;
 }
 
-#LEFTBTN, #RIGHTBTN, #DOWNBTN {
+.LEFTBTN, .RIGHTBTN, .DOWNBTN {
     background-color: var(--color-col6);
     border-color: #000;
     height: 400;
@@ -82,7 +82,7 @@ input {
     font-size: 150;
 }
 
-#LEFTBTN, #RIGHTBTN {
+.LEFTBTN, .RIGHTBTN {
     width: 50%;
     display: inline-block;
 }

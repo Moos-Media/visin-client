@@ -1,6 +1,7 @@
 let CURRENTGAME = "VIERGEWINNT";
 let PLAYERID = -99;
 let LASTKEY = "";
+let COLORCODE = "";
 let SESSIONID = -99999;
 var socket;
 
@@ -256,22 +257,34 @@ function drawColorSelectionScreen() {
   cancel.mousePressed(drawStartScreen);
 
   btn1.mousePressed(() => {
-    sendColor("COLOR1");
+    COLORCODE = "COLOR1";
+    sendColor(COLORCODE);
+    drawGameControls();
   });
   btn2.mousePressed(() => {
-    sendColor("COLOR2");
+    COLORCODE = "COLOR2";
+    sendColor(COLORCODE);
+    drawGameControls();
   });
   btn3.mousePressed(() => {
-    sendColor("COLOR3");
+    COLORCODE = "COLOR3";
+    sendColor(COLORCODE);
+    drawGameControls();
   });
   btn4.mousePressed(() => {
-    sendColor("COLOR4");
+    COLORCODE = "COLOR4";
+    sendColor(COLORCODE);
+    drawGameControls();
   });
   btn5.mousePressed(() => {
-    sendColor("COLOR5");
+    COLORCODE = "COLOR5";
+    sendColor(COLORCODE);
+    drawGameControls();
   });
   btn6.mousePressed(() => {
-    sendColor("COLOR6");
+    COLORCODE = "COLOR6";
+    sendColor(COLORCODE);
+    drawGameControls();
   });
 
   socket.on("color-blocked", (colorCode) => {
@@ -451,22 +464,50 @@ function drawGameControls() {
   btnParent.parent("centerdiv");
   btnParent.id("btnparent");
 
+  //Get Color ID
+  let id = "";
+  switch (COLORCODE) {
+    case "COLOR1":
+      id = "col-button-1";
+      break;
+    case "COLOR2":
+      id = "col-button-2";
+      break;
+    case "COLOR3":
+      id = "col-button-3";
+      break;
+    case "COLOR4":
+      id = "col-button-4";
+      break;
+    case "COLOR5":
+      id = "col-button-5";
+      break;
+    case "COLOR6":
+      id = "col-button-6";
+      break;
+    default:
+      break;
+  }
+
   let leftBtn = createButton("←");
-  leftBtn.id("LEFTBTN");
+  leftBtn.id(id);
+  leftBtn.class("LEFTBTN");
   leftBtn.parent("btnparent");
   leftBtn.mousePressed(() => {
     sendControl("LEFT");
   });
 
   let rightBtn = createButton("→");
-  rightBtn.id("RIGHTBTN");
+  rightBtn.id(id);
+  rightBtn.class("RIGHTBTN");
   rightBtn.parent("btnparent");
   rightBtn.mousePressed(() => {
     sendControl("RIGHT");
   });
 
   let downBtn = createButton("↓");
-  downBtn.id("DOWNBTN");
+  downBtn.id(id);
+  downBtn.class("DOWNBTN");
   downBtn.parent("centerdiv");
   downBtn.mousePressed(() => {
     sendControl("DOWN");

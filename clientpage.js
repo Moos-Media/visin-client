@@ -22,7 +22,7 @@ function setup() {
 function draw() {}
 
 function sendControl(tosend) {
-  socket.emit("/api/client/sendControl", { control: tosend });
+  socket.emit("/api/client/sendControl", { control: tosend, player: PLAYERID });
 }
 
 function sendColor(toSend) {
@@ -170,7 +170,7 @@ function drawGameSelectionScreen() {
   btn1.id("my-button");
   btn1.parent("centerdiv");
   btn1.mousePressed(() => {
-    PLAYERID = 0;
+    PLAYERID = 1;
     socket.emit("/api/client/startSession", (response) => {
       if (response.status == "success") {
         SESSIONID = response.sessionID;
@@ -198,7 +198,7 @@ function drawGameSelectionScreen() {
   //Event Handlers
 
   btn2.mousePressed(() => {
-    PLAYERID = 1;
+    PLAYERID = 2;
     drawCodeInput("IN");
   });
   btn3.mousePressed(drawColorSelectionScreen);

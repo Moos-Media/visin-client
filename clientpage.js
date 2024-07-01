@@ -517,4 +517,11 @@ function drawGameControls() {
   cancel.id("cancel-button");
   cancel.parent("centerdiv");
   cancel.mousePressed(drawStartScreen);
+
+  socket.on("won", () => {
+    drawGameResult("WIN");
+  });
+  socket.on("lost", () => {
+    drawGameResult("LOSS");
+  });
 }

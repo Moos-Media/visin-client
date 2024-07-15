@@ -557,47 +557,55 @@ function drawGameControls() {
   });
 }
 
-function drawAchievementScreen() {
+async function drawAchievementScreen() {
   removeElements();
   let centerdiv = createElement("div");
   centerdiv.id("centerdiv");
 
   let indexList = new Array(0);
-  indexList.push(0, 5);
 
-  let displayIndex = 0;
+  await socket.emit(
+    "/api/client/getAchievements",
+    SESSIONID,
+    PLAYERID,
+    (list) => {
+      indexList = list;
 
-  addImg(indexList[displayIndex]);
+      let displayIndex = 0;
 
-  if (indexList.length > 1) {
-    let leftBtn = createButton("<-");
-    let rightBtn = createButton("->");
-
-    leftBtn.class("A_LEFTBTN");
-    rightBtn.class("A_RIGHTBTN");
-
-    leftBtn.mousePressed(() => {
-      if (displayIndex > 0) {
-        displayIndex -= 1;
-      } else {
-        displayIndex = indexList.length - 1;
-      }
       addImg(indexList[displayIndex]);
-    });
-    rightBtn.mousePressed(() => {
-      if (displayIndex < indexList.length - 1) {
-        displayIndex += 1;
-      } else {
-        displayIndex = 0;
-      }
-      addImg(indexList[displayIndex]);
-    });
-  }
 
-  let cancel = createButton("Spielabbruch");
-  cancel.id("cancel-button");
-  cancel.parent("centerdiv");
-  cancel.mousePressed(drawStartScreen);
+      if (indexList.length > 1) {
+        let leftBtn = createButton("<-");
+        let rightBtn = createButton("->");
+
+        leftBtn.class("A_LEFTBTN");
+        rightBtn.class("A_RIGHTBTN");
+
+        leftBtn.mousePressed(() => {
+          if (displayIndex > 0) {
+            displayIndex -= 1;
+          } else {
+            displayIndex = indexList.length - 1;
+          }
+          addImg(indexList[displayIndex]);
+        });
+        rightBtn.mousePressed(() => {
+          if (displayIndex < indexList.length - 1) {
+            displayIndex += 1;
+          } else {
+            displayIndex = 0;
+          }
+          addImg(indexList[displayIndex]);
+        });
+      }
+
+      let cancel = createButton("Spielabbruch");
+      cancel.id("cancel-button");
+      cancel.parent("centerdiv");
+      cancel.mousePressed(drawStartScreen);
+    }
+  );
 }
 
 function addImg(index) {

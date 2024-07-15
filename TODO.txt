@@ -2,14 +2,14 @@
 Spielregeln als Slide-Over
 Seitenübergänge
 Push to History
-Confirm color choice?!
+CANCELLED: Confirm color choice?!
 
 // Game
 DONE: Fix blinking
 implement Bot and random Sessions
 DONE: Half coloring with color Selection
-Let Game End state stay on building
-game startup screens on building
+DONE: Let Game End state stay on building
+DONE: game startup screens on building
 CANCELLED: Implement Brightness per Cell
 Refactor Gamesession final
 Implement Pong?!

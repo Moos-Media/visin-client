@@ -4,19 +4,42 @@ let LASTKEY = "";
 let COLORCODE = "";
 let SESSIONID = -99999;
 var socket;
+let ACHIEVEMENTPATHS = new Array(20);
 
-function preload() {}
+function preload() {
+  ACHIEVEMENTPATHS[0] = "../Images/01_Der Sieg am Horizont.PNG";
+  ACHIEVEMENTPATHS[1] = "../Images/02_Oben auf der Spitze.PNG";
+  ACHIEVEMENTPATHS[2] = "../Images/03_Auf Umwegen zum Erfolg.PNG";
+  ACHIEVEMENTPATHS[3] = "../Images/04_Auge um Auge.PNG";
+  ACHIEVEMENTPATHS[4] = "../Images/05_Zwei Siege mit einem Stein.PNG";
+  ACHIEVEMENTPATHS[5] = "../Images/06_Doppeltgemoppelt.PNG";
+  ACHIEVEMENTPATHS[6] = "../Images/07_Alle guten Dinge sind 3.PNG";
+  ACHIEVEMENTPATHS[7] = "../Images/08_Der Rote Teppich.PNG";
+  ACHIEVEMENTPATHS[8] = "../Images/09_Das Gelbe vom Ei.PNG";
+  ACHIEVEMENTPATHS[9] = "../Images/10_Der Orangene Himmel.PNG";
+  ACHIEVEMENTPATHS[10] = "../Images/11_Die Cyan Säule.PNG";
+  ACHIEVEMENTPATHS[11] = "../Images/12_Durch die pinke Brille.PNG";
+  ACHIEVEMENTPATHS[12] = "../Images/13_Blauc machen.PNG";
+  ACHIEVEMENTPATHS[13] = "../Images/14_Technologischer Vorsprung.PNG";
+  ACHIEVEMENTPATHS[14] = "../Images/15_Die Hochschulspiele.PNG";
+  ACHIEVEMENTPATHS[15] = "../Images/16_Im Mittelpunkt Hessens.PNG";
+  ACHIEVEMENTPATHS[16] = "../Images/17_Zicke Zacke Babykacke.PNG";
+  ACHIEVEMENTPATHS[17] = "../Images/18_Hart im Nehmen.PNG";
+  ACHIEVEMENTPATHS[18] = "../Images/19_Ein halbes Dutzend.PNG";
+  ACHIEVEMENTPATHS[19] = "../Images/20_Wie viel sind ein Dutzend.PNG";
+}
 
 function setup() {
   noCanvas();
   socket = io.connect();
 
   //drawStartScreen();
-  drawGameSelectionScreen();
+  //drawGameSelectionScreen();
   //drawColorSelectionScreen();
-  //drawGameResult("LOSS");
+  //drawGameResult("WIN");
   //drawCodeInput("IN");
   //drawGameControls();
+  drawAchievementScreen();
 }
 
 function draw() {}
@@ -38,7 +61,7 @@ function drawStartScreen() {
   let centerdiv = createElement("div");
   centerdiv.id("centerdiv");
 
-  let logo = createImg("../thmlogo.png");
+  let logo = createImg("../Images/thmlogo.png");
   logo.id("logo");
   logo.parent("centerdiv");
 
@@ -343,11 +366,11 @@ function drawGameResult(result) {
   p1.parent("centerdiv");
 
   if (result == "LOSS") {
-    let img = createImg("../loss.png");
+    let img = createImg("../Images/loss.png");
     img.parent("centerdiv");
     img.id("logo");
   } else if (result == "WIN") {
-    let img = createImg("../win.png");
+    let img = createImg("../Images/win.png");
     img.parent("centerdiv");
     img.id("logo");
   } else if (result == "DRAW") {
@@ -364,6 +387,11 @@ function drawGameResult(result) {
     btn2.mousePressed(drawStartScreen);
   } else {
   }
+
+  let achBtn = createButton("Achievements");
+  achBtn.parent("centerdiv");
+  achBtn.id("my-button");
+  achBtn.mousePressed(drawAchievementScreen);
 
   // let p2 = createElement(
   //   "p",
@@ -527,4 +555,21 @@ function drawGameControls() {
   socket.on("draw", () => {
     drawGameResult("DRAW");
   });
+}
+
+function drawAchievementScreen() {
+  removeElements();
+  let centerdiv = createElement("div");
+  centerdiv.id("centerdiv");
+
+  let indexList = new Array(0);
+  indexList.push(0, 5);
+
+  for (let i = 0; i < indexList.length; i++) {
+    const element = indexList[i];
+
+    let img = createImg(ACHIEVEMENTPATHS[element]);
+    img.parent("centerdiv");
+    img.class("achievement");
+  }
 }

@@ -170,3 +170,7 @@ input {
 #col-blocked {
     background-color: lightgrey;
 }
+
+.achievement {
+    width: 100%;
+}

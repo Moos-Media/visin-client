@@ -7,7 +7,7 @@ Confirm color choice?!
 // Game
 Fix blinking
 implement Bot and random Sessions
-Half coloring with color Selection
+DONE: Half coloring with color Selection
 Let Game End state stay on building
 game startup screens on building
 Implement Brightness per Cell

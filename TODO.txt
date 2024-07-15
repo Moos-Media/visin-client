@@ -1,3 +1,23 @@
+// UI
 Spielregeln als Slide-Over
 Seitenübergänge
 Push to History
+Confirm color choice?!
+
+// Game
+Fix blinking
+implement Bot and random Sessions
+Half coloring with color Selection
+Let Game End state stay on building
+game startup screens on building
+Implement Brightness per Cell
+Refactor Gamesession final
+Implement Pong?!
+Implement Flappy Bird?!
+Implement Easter Eggs
+Implement Reward system
+
+// ESP32
+DONE: Let last state stay on display
+DONE: set brightness via RESTful API
+Setup Raspi as Server and change IP in config

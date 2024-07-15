@@ -11,7 +11,7 @@ DONE: Half coloring with color Selection
 DONE: Let Game End state stay on building
 DONE: game startup screens on building
 CANCELLED: Implement Brightness per Cell
-Refactor Gamesession final
+CANCELLED: Refactor Gamesession final
 Implement Pong?!
 Implement Flappy Bird?!
 Implement Easter Eggs

@@ -34,12 +34,12 @@ function setup() {
   socket = io.connect();
 
   //drawStartScreen();
-  //drawGameSelectionScreen();
+  drawGameSelectionScreen();
   //drawColorSelectionScreen();
   //drawGameResult("WIN");
   //drawCodeInput("IN");
   //drawGameControls();
-  drawAchievementScreen();
+  //drawAchievementScreen();
 }
 
 function draw() {}
@@ -49,7 +49,7 @@ function sendControl(tosend) {
 }
 
 function sendColor(toSend) {
-  console.log("In der Handler Funktion");
+  console.log("Color: " + toSend);
   socket.emit("/api/client/colorSelected", SESSIONID, PLAYERID, toSend);
 }
 

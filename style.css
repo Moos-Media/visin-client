@@ -87,6 +87,16 @@ input {
     display: inline-block;
 }
 
+.A_LEFTBTN, .A_RIGHTBTN {
+    width: 5%;
+    height: 5%;
+    position: fixed;
+    bottom: 45%;
+}
+
+.A_RIGHTBTN {
+    right: 0%;
+}
 #cancel-button {
     position: fixed;
     width: 40%;

@@ -565,11 +565,57 @@ function drawAchievementScreen() {
   let indexList = new Array(0);
   indexList.push(0, 5);
 
-  for (let i = 0; i < indexList.length; i++) {
-    const element = indexList[i];
+  let displayIndex = 0;
 
-    let img = createImg(ACHIEVEMENTPATHS[element]);
-    img.parent("centerdiv");
-    img.class("achievement");
+  addImg(indexList[displayIndex]);
+
+  if (indexList.length > 1) {
+    let leftBtn = createButton("<-");
+    let rightBtn = createButton("->");
+
+    leftBtn.class("A_LEFTBTN");
+    rightBtn.class("A_RIGHTBTN");
+
+    leftBtn.mousePressed(() => {
+      if (displayIndex > 0) {
+        displayIndex -= 1;
+      } else {
+        displayIndex = indexList.length - 1;
+      }
+      addImg(indexList[displayIndex]);
+    });
+    rightBtn.mousePressed(() => {
+      if (displayIndex < indexList.length - 1) {
+        displayIndex += 1;
+      } else {
+        displayIndex = 0;
+      }
+      addImg(indexList[displayIndex]);
+    });
+  }
+
+  let cancel = createButton("Spielabbruch");
+  cancel.id("cancel-button");
+  cancel.parent("centerdiv");
+  cancel.mousePressed(drawStartScreen);
+}
+
+function addImg(index) {
+  removeElementsByClass("achievements");
+  removeElementsByClass("achievementsDownload");
+  let img = createImg(ACHIEVEMENTPATHS[index]);
+  img.class("achievements");
+  img.parent("centerdiv");
+
+  let download = createElement("a", "Download");
+  download.class("achievementsDownload");
+  download.attribute("href", ACHIEVEMENTPATHS[index]);
+  download.attribute("download", "");
+}
+
+function removeElementsByClass(className) {
+  const elements = document.getElementsByClassName(className);
+  while (elements.length > 0) {
+    elements[0].parentNode.removeChild(elements[0]);
   }
 }

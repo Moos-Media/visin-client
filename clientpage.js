@@ -555,7 +555,8 @@ function drawGameControls() {
   socket.on("lost", () => {
     drawGameResult("LOSS");
   });
-  socket.on("draw", () => {
+  socket.on("game-draw", () => {
+    console.log("Got draw message");
     drawGameResult("DRAW");
   });
 }

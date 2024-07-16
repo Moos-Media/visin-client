@@ -87,6 +87,21 @@ input {
     display: inline-block;
 }
 
+#GREYEDOUT {
+    width: 100%;
+    height: 120;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+    font-size: 50;
+
+    color: var(darkgrey);
+    background-color: var(--color-lightgrey);
+    border: 5px solid var(black);
+    border-radius: 25px;
+}
+
 .A_LEFTBTN, .A_RIGHTBTN {
     width: 5%;
     height: 5%;

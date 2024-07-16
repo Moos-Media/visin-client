@@ -5,6 +5,7 @@ let COLORCODE = "";
 let SESSIONID = -99999;
 var socket;
 let ACHIEVEMENTPATHS = new Array(20);
+let isInGame = false;
 
 function preload() {
   ACHIEVEMENTPATHS[0] = "../Images/01_Der Sieg am Horizont.PNG";
@@ -175,6 +176,7 @@ function drawRuleScreen() {
 }
 
 function drawGameSelectionScreen() {
+  isInGame = true;
   // Remove all previous Elements
   removeElements();
 
@@ -337,6 +339,7 @@ function drawColorSelectionScreen() {
 }
 
 function drawGameResult(result) {
+  isInGame = false;
   // Remove all previous Elements
   removeElements();
 
@@ -625,5 +628,19 @@ function removeElementsByClass(className) {
   const elements = document.getElementsByClassName(className);
   while (elements.length > 0) {
     elements[0].parentNode.removeChild(elements[0]);
+  }
+}
+
+function keyPressed() {
+  if (!isInGame) {
+    return;
+  }
+
+  if (keyCode === LEFT_ARROW) {
+    sendControl("LEFT");
+  } else if (keyCode === DOWN_ARROW) {
+    sendControl("DOWN");
+  } else if (keyCode === RIGHT_ARROW) {
+    sendControl("RIGHT");
   }
 }

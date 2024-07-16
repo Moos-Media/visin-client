@@ -71,6 +71,7 @@ input {
     background-color: var(--color-lightgrey);
     border: 5px solid var(--color-thm-green);
     border-radius: 25px;
+    touch-action: manipulation;
 }
 
 .LEFTBTN, .RIGHTBTN, .DOWNBTN {

@@ -214,6 +214,8 @@ function drawGameSelectionScreen() {
       if (response.status == "success") {
         SESSIONID = response.sessionID;
         drawCodeInput("OUT");
+      } else if (response.status == "blocked") {
+        drawWaitScreen();
       }
     });
   });

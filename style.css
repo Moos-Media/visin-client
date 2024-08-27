@@ -58,6 +58,12 @@ input {
     text-align: center;
 }
 
+img {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
 #my-button, .LEFTBTN, .RIGHTBTN, .DOWNBTN {
     width: 100%;
     height: 120;

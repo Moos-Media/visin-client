@@ -34,6 +34,15 @@ function setup() {
   noCanvas();
   socket = io.connect();
 
+  let params = getURLParams();
+  let inputCode = params.CODE;
+
+  if (inputCode > 0) {
+    drawCodeInput("IN", inputCode);
+    return;
+  }
+
+  //drawWaitScreen();
   //drawStartScreen();
   drawGameSelectionScreen();
   //drawColorSelectionScreen();
@@ -408,7 +417,7 @@ function drawGameResult(result) {
   buffer.id("buffer15");
 }
 
-function drawCodeInput(dir) {
+function drawCodeInput(dir, filler = "") {
   removeElements();
   let centerdiv = createElement("div");
   centerdiv.id("centerdiv");
@@ -440,6 +449,9 @@ function drawCodeInput(dir) {
   );
 
   if (dir == "IN") {
+    if (filler.length > 0) {
+      codeInput.value(filler);
+    }
     let submit = createButton("Beitreten");
     submit.id("my-button");
     submit.parent("centerdiv");
@@ -454,6 +466,30 @@ function drawCodeInput(dir) {
     });
   } else if (dir == "OUT") {
     codeInput.value(SESSIONID);
+
+    let qrBuffer = createDiv();
+    qrBuffer.id("buffer10");
+    qrBuffer.parent("centerdiv");
+
+    let tagDiv = createDiv();
+    tagDiv.parent("centerdiv");
+
+    //Setup Link info for QR Code
+    let ownURL = parent.location.href;
+    let codeURL = ownURL.concat("?CODE=".concat(SESSIONID));
+
+    // make the QR code:
+    let qr = qrcode(0, "L");
+    qr.addData(codeURL);
+    qr.make();
+    // create an image from it:
+    // paaramtetrs are cell size, margin size, and alt tag
+    // cell size default: 2
+    // margin zize defaault: 4 * cell size
+    let qrImg = qr.createImgTag(15, 60, "qr code");
+    // put the image into the HTML div:
+    tagDiv.html(qrImg);
+    tagDiv.id("qrCodeDiv");
     socket.on("playerjoined", () => {
       drawColorSelectionScreen();
     });
@@ -610,6 +646,28 @@ async function drawAchievementScreen() {
       cancel.mousePressed(drawStartScreen);
     }
   );
+}
+
+function drawWaitScreen() {
+  removeElements();
+
+  let centerdiv = createElement("div");
+  centerdiv.id("centerdiv");
+
+  let buffer = createElement("div");
+  buffer.id("buffer20");
+  buffer.parent("centerdiv");
+
+  let text = createElement(
+    "p",
+    "Leider sind gerade alle Spielflächen belegt oder reserviert. Bitte versuche es in Kürze erneut (Du solltest das THM-Logo sehen können, sobald das Feld wieder frei ist."
+  );
+  text.parent("centerdiv");
+
+  let backBtn = createButton("Zurück zum Menü");
+  backBtn.id("my-button");
+  backBtn.parent("centerdiv");
+  backBtn.mousePressed(drawGameSelectionScreen);
 }
 
 function addImg(index) {

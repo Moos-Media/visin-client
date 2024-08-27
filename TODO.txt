@@ -1,23 +1,36 @@
 // UI
 Spielregeln als Slide-Over
 Seitenübergänge
-Push to History
-CANCELLED: Confirm color choice?!
+Push to History/ Local Storage
+Error if isUsed
+Rejoin
 
 // Game
-DONE: Fix blinking
 implement Bot and random Sessions
-DONE: Half coloring with color Selection
-DONE: Let Game End state stay on building
-DONE: game startup screens on building
-CANCELLED: Implement Brightness per Cell
-CANCELLED: Refactor Gamesession final
 Implement Pong?!
 Implement Flappy Bird?!
 Implement Easter Eggs
 Implement Reward system
 
 // ESP32
+Debug startup before Raspi Startup
+
+//RASPI
+Create Startup Script to run nodemon etc.
+
+
+// DONE
+DONE: Fix blinking
+DONE: Half coloring with color Selection
+DONE: Let Game End state stay on building
+DONE: game startup screens on building
 DONE: Let last state stay on display
 DONE: set brightness via RESTful API
-Setup Raspi as Server and change IP in config
+DONE:Setup Raspi as Server and change IP in config
+DONE: Join by QR code
+
+
+// CANCELLED
+CANCELLED: Implement Brightness per Cell
+CANCELLED: Refactor Gamesession final
+CANCELLED: Confirm color choice?!

@@ -1,6 +1,4 @@
 // UI
-Spielregeln als Slide-Over
-Seitenübergänge
 Push to History/ Local Storage
 Error if isUsed
 Rejoin
@@ -34,3 +32,5 @@ DONE: Join by QR code
 CANCELLED: Implement Brightness per Cell
 CANCELLED: Refactor Gamesession final
 CANCELLED: Confirm color choice?!
+CANCELLED: Spielregeln als Slide-Over
+CANCELLED: Seitenübergänge

@@ -33,6 +33,11 @@ function preload() {
 function setup() {
   noCanvas();
   socket = io.connect();
+  socket.on("delete", () => {
+    console.log("Got Message");
+    SESSIONID = -99999;
+    drawStartScreen();
+  });
 
   let params = getURLParams();
   let inputCode = params.CODE;
@@ -237,7 +242,7 @@ function drawGameSelectionScreen() {
   });
   btn3.mousePressed(drawColorSelectionScreen);
   btn4.mousePressed(drawColorSelectionScreen);
-  cancel.mousePressed(drawStartScreen);
+  cancel.mousePressed(() => socket.emit("api/client/endSession", SESSIONID));
 }
 
 function drawColorSelectionScreen() {
@@ -288,7 +293,7 @@ function drawColorSelectionScreen() {
   btn6.parent("centerdiv");
 
   //Event Handlers
-  cancel.mousePressed(drawStartScreen);
+  cancel.mousePressed(() => socket.emit("api/client/endSession", SESSIONID));
 
   btn1.mousePressed(() => {
     COLORCODE = "COLOR1";
@@ -457,6 +462,7 @@ function drawCodeInput(dir, filler = "") {
     submit.parent("centerdiv");
     submit.mousePressed(() => {
       socket.emit("/api/client/joinSession", codeInput.value(), (response) => {
+        console.log(response.status);
         if (response.status == "success") {
           SESSIONID = codeInput.value();
           console.log("Session ID: " + SESSIONID);
@@ -498,7 +504,7 @@ function drawCodeInput(dir, filler = "") {
   let cancel = createButton("Spielabbruch");
   cancel.id("cancel-button");
   cancel.parent("centerdiv");
-  cancel.mousePressed(drawStartScreen);
+  cancel.mousePressed(() => socket.emit("api/client/endSession", SESSIONID));
 }
 
 function drawGameControls() {
@@ -583,7 +589,7 @@ function drawGameControls() {
   let cancel = createButton("Spielabbruch");
   cancel.id("cancel-button");
   cancel.parent("centerdiv");
-  cancel.mousePressed(drawStartScreen);
+  cancel.mousePressed(() => socket.emit("api/client/endSession", SESSIONID));
 
   socket.on("won", () => {
     drawGameResult("WIN");
@@ -643,7 +649,9 @@ async function drawAchievementScreen() {
       let cancel = createButton("Spielabbruch");
       cancel.id("cancel-button");
       cancel.parent("centerdiv");
-      cancel.mousePressed(drawStartScreen);
+      cancel.mousePressed(() =>
+        socket.emit("api/client/endSession", SESSIONID)
+      );
     }
   );
 }

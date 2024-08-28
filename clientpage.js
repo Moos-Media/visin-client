@@ -549,6 +549,15 @@ function drawCodeInput(dir, filler = "") {
         }
       });
     });
+    // Also join when enter is pressed in Code field.
+    codeInput.changed(() => {
+      socket.emit("/api/client/joinSession", codeInput.value(), (response) => {
+        if (response.status == "success") {
+          SESSIONID = codeInput.value();
+          drawColorSelectionScreen();
+        }
+      });
+    });
   } else if (dir == "OUT") {
     codeInput.value(SESSIONID);
 

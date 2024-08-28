@@ -9,6 +9,7 @@ let isInGame = false;
 let timePerMove = 0;
 
 function preload() {
+  //Load all Assets for the achievements before building Page
   ACHIEVEMENTPATHS[0] = "../Images/01_Der Sieg am Horizont.PNG";
   ACHIEVEMENTPATHS[1] = "../Images/02_Oben auf der Spitze.PNG";
   ACHIEVEMENTPATHS[2] = "../Images/03_Auf Umwegen zum Erfolg.PNG";
@@ -32,21 +33,31 @@ function preload() {
 }
 
 function setup() {
+  //Delete 2D Animation Canvas
   noCanvas();
+
+  //Start Socket Connection to server
   socket = io.connect();
+
+  //Event Handler for Deleting active Session after pressing "Spielabbruch"
   socket.on("delete", () => {
     console.log("Got Message");
     SESSIONID = -99999;
     drawStartScreen();
   });
 
+  //Get Parameters from URL
   let params = getURLParams();
+  //Parse out Session Code
   let inputCode = params.CODE;
 
+  //Switch to input Screen, if Code was detected (from scanning QR Code)
   if (inputCode > 0) {
     drawCodeInput("IN", inputCode);
     return;
   }
+
+  //Draw Screens -> StartScreen is normal, others are for debug only
 
   //drawWaitScreen();
   drawStartScreen();
@@ -58,8 +69,10 @@ function setup() {
   //drawAchievementScreen();
 }
 
+//Not needed, no animation
 function draw() {}
 
+//Send Control or Color Info to server
 function sendControl(tosend) {
   socket.emit("/api/client/sendControl", { control: tosend, player: PLAYERID });
 }
@@ -69,6 +82,9 @@ function sendColor(toSend) {
   socket.emit("/api/client/colorSelected", SESSIONID, PLAYERID, toSend);
 }
 
+//
+// Functions for Screen Drawing
+//
 function drawStartScreen() {
   // Remove all previous Elements
   removeElements();
@@ -191,7 +207,9 @@ function drawRuleScreen() {
 }
 
 function drawGameSelectionScreen() {
+  // Start Tracking own Status for keyboard control
   isInGame = true;
+
   // Remove all previous Elements
   removeElements();
 
@@ -209,12 +227,17 @@ function drawGameSelectionScreen() {
   let btn1 = createButton("Freund:in");
   btn1.id("my-button");
   btn1.parent("centerdiv");
+
+  //Start Session
   btn1.mousePressed(() => {
     PLAYERID = 1;
     socket.emit("/api/client/startSession", (response) => {
+      //Session available
       if (response.status == "success") {
         SESSIONID = response.sessionID;
         drawCodeInput("OUT");
+
+        //Board is blocked
       } else if (response.status == "blocked") {
         drawWaitScreen();
       }
@@ -243,34 +266,50 @@ function drawGameSelectionScreen() {
     PLAYERID = 2;
     drawCodeInput("IN");
   });
+
+  // Start Random Game Session
   btn3.mousePressed(() => {
     PLAYERID = -99;
     socket.emit("/api/client/requestRandomSession", (response) => {
+      //Started Session
       if (response.status == "success") {
         SESSIONID = response.sessionID;
         PLAYERID = response.playerID;
         drawColorSelectionScreen();
+
+        //Board is blocked
       } else if (response.status == "blocked") {
         drawWaitScreen();
+
+        //Failed somewhere
       } else if (response.status == "failed") {
         console.log("Failed somewhere");
       }
     });
   });
+
+  //Start Bot Session
   btn4.mousePressed(() => {
     PLAYERID = -99;
     socket.emit("/api/client/requestBotSession", (response) => {
+      //Started Session
       if (response.status == "success") {
         SESSIONID = response.sessionID;
         PLAYERID = response.playerID;
         drawColorSelectionScreen();
+
+        //Board is blocked
       } else if (response.status == "blocked") {
         drawWaitScreen();
+
+        //Failed somewhere
       } else if (response.status == "failed") {
         console.log("Failed somewhere");
       }
     });
   });
+
+  //End Game
   cancel.mousePressed(() => {
     socket.emit("api/client/endSession", SESSIONID);
     drawStartScreen();
@@ -327,6 +366,7 @@ function drawColorSelectionScreen() {
   //Event Handlers
   cancel.mousePressed(() => socket.emit("api/client/endSession", SESSIONID));
 
+  //Handlers for Color Selection
   btn1.mousePressed(() => {
     COLORCODE = "COLOR1";
     sendColor(COLORCODE);
@@ -358,6 +398,7 @@ function drawColorSelectionScreen() {
     drawGameControls();
   });
 
+  //Handler for color blocking from second player, grey out buttons
   socket.on("color-blocked", (colorCode) => {
     switch (colorCode) {
       case "COLOR1":
@@ -385,7 +426,9 @@ function drawColorSelectionScreen() {
 }
 
 function drawGameResult(result) {
+  // Track own status for Keyboard control
   isInGame = false;
+
   // Remove all previous Elements
   removeElements();
 
@@ -432,6 +475,7 @@ function drawGameResult(result) {
     btn1.parent("centerdiv");
     btn2.parent("centerdiv");
 
+    //Event Handlers
     btn1.mousePressed(drawColorSelectionScreen);
     btn2.mousePressed(drawStartScreen);
   } else {
@@ -456,6 +500,8 @@ function drawGameResult(result) {
 
 function drawCodeInput(dir, filler = "") {
   removeElements();
+
+  //Create Elements
   let centerdiv = createElement("div");
   centerdiv.id("centerdiv");
 
@@ -478,26 +524,27 @@ function drawCodeInput(dir, filler = "") {
 
   codeInput.parent("centerdiv");
 
+  // Restrict code length to 5 characters
   codeInput.attribute("maxlength", "5");
-
   codeInput.attribute(
     "oninput",
     "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength)"
   );
 
   if (dir == "IN") {
+    //Add code from QR code if scanned previously
     if (filler.length > 0) {
       codeInput.value(filler);
     }
     let submit = createButton("Beitreten");
     submit.id("my-button");
     submit.parent("centerdiv");
+
+    //Join with code from input field
     submit.mousePressed(() => {
       socket.emit("/api/client/joinSession", codeInput.value(), (response) => {
-        console.log(response.status);
         if (response.status == "success") {
           SESSIONID = codeInput.value();
-          console.log("Session ID: " + SESSIONID);
           drawColorSelectionScreen();
         }
       });
@@ -528,6 +575,7 @@ function drawCodeInput(dir, filler = "") {
     // put the image into the HTML div:
     tagDiv.html(qrImg);
     tagDiv.id("qrCodeDiv");
+    //Event handler for joining of second player
     socket.on("playerjoined", () => {
       drawColorSelectionScreen();
     });
@@ -545,8 +593,11 @@ function drawCodeInput(dir, filler = "") {
 function drawGameControls() {
   removeElements();
   let textString = "";
+
+  //Get Time for info text
   socket.emit("api/client/getMoveTime", (data) => {
     timePerMove = data;
+    //Build string
     textString =
       "<b>Los geht's!</b> Bewege deinen Stein in der Reihe mit den Pfeiltasten hin und her und beobachte, was auf der Wand passiert. Sobald du die passende Spalte gefunden hast, in der du deinen Stein setzen willst, lasse ihn Fallen. Für alle Züge in deinem Spiel hast du insgesamt " +
       timePerMove +
@@ -563,6 +614,7 @@ function drawGameControls() {
   buffer1.id("buffer5");
   buffer1.parent("centerdiv");
 
+  //Setup string before API call hits
   textString =
     "<b>Los geht's!</b> Bewege deinen Stein in der Reihe mit den Pfeiltasten hin und her und beobachte, was auf der Wand passiert. Sobald du die passende Spalte gefunden hast, in der du deinen Stein setzen willst, lasse ihn Fallen. Pro Spielzug hast du " +
     timePerMove +
@@ -638,6 +690,7 @@ function drawGameControls() {
   cancel.parent("centerdiv");
   cancel.mousePressed(() => socket.emit("api/client/endSession", SESSIONID));
 
+  // Event Handlers for Game Result
   socket.on("won", () => {
     drawGameResult("WIN");
   });
@@ -649,10 +702,12 @@ function drawGameControls() {
     drawGameResult("DRAW");
   });
 
+  // Event Handler for recurring time update from server
   socket.on("update-time", (data) => {
     let m = 0;
     let sec = 0;
 
+    // Convert seconds to m:ss
     m = Math.floor(data / 60);
     sec = data - m * 60;
 
@@ -660,6 +715,8 @@ function drawGameControls() {
     if (sec >= 10) output = "Verbleibende Zeit: " + m + ":" + sec;
     if (sec < 10) output = "Verbleibende Zeit: " + m + ":0" + sec;
     if (data < 0) output = "Verbleibende Zeit: 0:00";
+
+    //Update Text
     time.html(output);
   });
 }
@@ -671,6 +728,7 @@ async function drawAchievementScreen() {
 
   let indexList = new Array(0);
 
+  //Request Array of earned achievement indexes -> if player earned ach 1, 3 and 10 this will return [0, 2, 9]
   await socket.emit(
     "/api/client/getAchievements",
     SESSIONID,
@@ -680,8 +738,10 @@ async function drawAchievementScreen() {
 
       let displayIndex = 0;
 
+      //Display first image
       addImg(indexList[displayIndex]);
 
+      //Setup left and right buttons if needed
       if (indexList.length > 1) {
         let leftBtn = createButton("<-");
         let rightBtn = createButton("->");
@@ -740,14 +800,19 @@ function drawWaitScreen() {
   backBtn.mousePressed(drawGameSelectionScreen);
 }
 
+// Helper function to firstly remove old image and then display new one
 function addImg(index) {
+  //Remove previous image and download button
   removeElementsByClass("achievements");
   removeElementsByClass("download-button");
+
+  //Add new image
   let img = createImg(ACHIEVEMENTPATHS[index]);
   img.id("achievements");
   img.class("achievements");
   img.parent("centerdiv");
 
+  //Add new DL button
   let download = createElement("a", "Download Bild");
   download.id("download-button");
   download.class("download-button");
@@ -755,6 +820,7 @@ function addImg(index) {
   download.attribute("download", "");
 }
 
+//Helper function to only remove by Class
 function removeElementsByClass(className) {
   const elements = document.getElementsByClassName(className);
   while (elements.length > 0) {
@@ -762,11 +828,14 @@ function removeElementsByClass(className) {
   }
 }
 
+//Setup keyboard control
 function keyPressed() {
+  //only accept while in game
   if (!isInGame) {
     return;
   }
 
+  //Send Controls
   if (keyCode === LEFT_ARROW) {
     sendControl("LEFT");
   } else if (keyCode === DOWN_ARROW) {

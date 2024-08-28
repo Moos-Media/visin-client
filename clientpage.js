@@ -6,6 +6,7 @@ let SESSIONID = -99999;
 var socket;
 let ACHIEVEMENTPATHS = new Array(20);
 let isInGame = false;
+let timePerMove = 0;
 
 function preload() {
   ACHIEVEMENTPATHS[0] = "../Images/01_Der Sieg am Horizont.PNG";
@@ -20,7 +21,7 @@ function preload() {
   ACHIEVEMENTPATHS[9] = "../Images/10_Der Orangene Himmel.PNG";
   ACHIEVEMENTPATHS[10] = "../Images/11_Die Cyan Säule.PNG";
   ACHIEVEMENTPATHS[11] = "../Images/12_Durch die pinke Brille.PNG";
-  ACHIEVEMENTPATHS[12] = "../Images/13_Blauc machen.PNG";
+  ACHIEVEMENTPATHS[12] = "../Images/13_Blau machen.PNG";
   ACHIEVEMENTPATHS[13] = "../Images/14_Technologischer Vorsprung.PNG";
   ACHIEVEMENTPATHS[14] = "../Images/15_Die Hochschulspiele.PNG";
   ACHIEVEMENTPATHS[15] = "../Images/16_Im Mittelpunkt Hessens.PNG";
@@ -242,8 +243,34 @@ function drawGameSelectionScreen() {
     PLAYERID = 2;
     drawCodeInput("IN");
   });
-  btn3.mousePressed(drawColorSelectionScreen);
-  btn4.mousePressed(drawColorSelectionScreen);
+  btn3.mousePressed(() => {
+    PLAYERID = -99;
+    socket.emit("/api/client/requestRandomSession", (response) => {
+      if (response.status == "success") {
+        SESSIONID = response.sessionID;
+        PLAYERID = response.playerID;
+        drawColorSelectionScreen();
+      } else if (response.status == "blocked") {
+        drawWaitScreen();
+      } else if (response.status == "failed") {
+        console.log("Failed somewhere");
+      }
+    });
+  });
+  btn4.mousePressed(() => {
+    PLAYERID = -99;
+    socket.emit("/api/client/requestBotSession", (response) => {
+      if (response.status == "success") {
+        SESSIONID = response.sessionID;
+        PLAYERID = response.playerID;
+        drawColorSelectionScreen();
+      } else if (response.status == "blocked") {
+        drawWaitScreen();
+      } else if (response.status == "failed") {
+        console.log("Failed somewhere");
+      }
+    });
+  });
   cancel.mousePressed(() => socket.emit("api/client/endSession", SESSIONID));
 }
 
@@ -511,6 +538,17 @@ function drawCodeInput(dir, filler = "") {
 
 function drawGameControls() {
   removeElements();
+  let textString = "";
+  socket.emit("api/client/getMoveTime", (data) => {
+    timePerMove = data;
+    textString =
+      "<b>Los geht's!</b> Bewege deinen Stein in der Reihe mit den Pfeiltasten hin und her und beobachte, was auf der Wand passiert. Sobald du die passende Spalte gefunden hast, in der du deinen Stein setzen willst, lasse ihn Fallen. Für alle Züge in deinem Spiel hast du insgesamt " +
+      timePerMove +
+      " min. Zeit dich zu entscheiden.";
+    text.html(textString);
+    let timeString = "Verbleibende Zeit: " + timePerMove + ":00";
+    time.html(timeString);
+  });
 
   let centerdiv = createElement("div");
   centerdiv.id("centerdiv");
@@ -519,10 +557,11 @@ function drawGameControls() {
   buffer1.id("buffer5");
   buffer1.parent("centerdiv");
 
-  let text = createElement(
-    "p",
-    "<b>Los geht's!</b> Bewege deinen Stein in der Reihe mit den Pfeiltasten hin und her und beobachte, was auf der Wand passiert. Sobald du die passende Spalte gefunden hast, in der du deinen Stein setzen willst, lasse ihn Fallen. Pro Spielzug hast du XX sec. Zeit dich zu entscheiden."
-  );
+  textString =
+    "<b>Los geht's!</b> Bewege deinen Stein in der Reihe mit den Pfeiltasten hin und her und beobachte, was auf der Wand passiert. Sobald du die passende Spalte gefunden hast, in der du deinen Stein setzen willst, lasse ihn Fallen. Pro Spielzug hast du " +
+    timePerMove +
+    " min. Zeit dich zu entscheiden.";
+  let text = createElement("p", textString);
   text.parent("centerdiv");
 
   let line = createElement("hr");
@@ -602,6 +641,20 @@ function drawGameControls() {
   socket.on("game-draw", () => {
     console.log("Got draw message");
     drawGameResult("DRAW");
+  });
+
+  socket.on("update-time", (data) => {
+    let m = 0;
+    let sec = 0;
+
+    m = Math.floor(data / 60);
+    sec = data - m * 60;
+
+    let output = "";
+    if (sec >= 10) output = "Verbleibende Zeit: " + m + ":" + sec;
+    if (sec < 10) output = "Verbleibende Zeit: " + m + ":0" + sec;
+    if (data < 0) output = "Verbleibende Zeit: 0:00";
+    time.html(output);
   });
 }
 

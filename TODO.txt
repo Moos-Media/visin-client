@@ -1,21 +1,11 @@
 // UI
-Push to History/ Local Storage
-Error if isUsed
-Rejoin
+Fix UI issues, check for compliance
 
 // Game
-implement Bot and random Sessions
-Implement Pong?!
-Implement Flappy Bird?!
-Implement Easter Eggs
-Implement Reward system
 
 // ESP32
-Debug startup before Raspi Startup
 
 //RASPI
-Create Startup Script to run nodemon etc.
-
 
 // DONE
 DONE: Fix blinking
@@ -26,7 +16,13 @@ DONE: Let last state stay on display
 DONE: set brightness via RESTful API
 DONE:Setup Raspi as Server and change IP in config
 DONE: Join by QR code
-
+DONE: Error if isUsed
+DONE: Implement random Sessions
+DONE: Debug startup before Raspi Startup
+DONE: Create Startup Script to run nodemon etc.
+DONE: Add Auth to Debug
+DONE: Implement Move Timer
+DONE: implement Bot
 
 // CANCELLED
 CANCELLED: Implement Brightness per Cell
@@ -34,3 +30,9 @@ CANCELLED: Refactor Gamesession final
 CANCELLED: Confirm color choice?!
 CANCELLED: Spielregeln als Slide-Over
 CANCELLED: Seitenübergänge
+CANCELLED: Push to History/ Local Storage
+CANCELLED: Rejoin
+CANCELLED: Implement Pong?!
+CANCELLED: Implement Flappy Bird?!
+CANCELLED: Implement Easter Eggs
+CANCELLED: Implement Reward system

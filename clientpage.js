@@ -49,8 +49,8 @@ function setup() {
   }
 
   //drawWaitScreen();
-  //drawStartScreen();
-  drawGameSelectionScreen();
+  drawStartScreen();
+  //drawGameSelectionScreen();
   //drawColorSelectionScreen();
   //drawGameResult("WIN");
   //drawCodeInput("IN");
@@ -271,7 +271,10 @@ function drawGameSelectionScreen() {
       }
     });
   });
-  cancel.mousePressed(() => socket.emit("api/client/endSession", SESSIONID));
+  cancel.mousePressed(() => {
+    socket.emit("api/client/endSession", SESSIONID);
+    drawStartScreen();
+  });
 }
 
 function drawColorSelectionScreen() {
@@ -463,7 +466,7 @@ function drawCodeInput(dir, filler = "") {
   let text = "";
   if (dir == "OUT") {
     text =
-      'Gib den folgenden Code an dein:e Freund:in weiter. Diese:r muss auf dem vorherigen Fenster "mit einem Code beitreten" auswählen und kann dann diesen Code eingeben.';
+      'Gib den folgenden Code an dein:e Freund:in weiter. Diese:r muss auf dem vorherigen Fenster "mit einem Code beitreten" auswählen und kann dann diesen Code eingeben. Oder scannt einfach den QR-Code unten.';
   } else if (dir == "IN") {
     text = "Gib unten den Code von Spieler 1 ein.";
   }
@@ -533,7 +536,10 @@ function drawCodeInput(dir, filler = "") {
   let cancel = createButton("Spielabbruch");
   cancel.id("cancel-button");
   cancel.parent("centerdiv");
-  cancel.mousePressed(() => socket.emit("api/client/endSession", SESSIONID));
+  cancel.mousePressed(() => {
+    socket.emit("api/client/endSession", SESSIONID);
+    drawStartScreen();
+  });
 }
 
 function drawGameControls() {
@@ -701,12 +707,13 @@ async function drawAchievementScreen() {
         });
       }
 
-      let cancel = createButton("Spielabbruch");
+      let cancel = createButton("Zum Hauptmenü");
       cancel.id("cancel-button");
       cancel.parent("centerdiv");
-      cancel.mousePressed(() =>
-        socket.emit("api/client/endSession", SESSIONID)
-      );
+      cancel.mousePressed(() => {
+        socket.emit("api/client/endSession", SESSIONID);
+        drawStartScreen();
+      });
     }
   );
 }
@@ -735,13 +742,15 @@ function drawWaitScreen() {
 
 function addImg(index) {
   removeElementsByClass("achievements");
-  removeElementsByClass("achievementsDownload");
+  removeElementsByClass("download-button");
   let img = createImg(ACHIEVEMENTPATHS[index]);
+  img.id("achievements");
   img.class("achievements");
   img.parent("centerdiv");
 
-  let download = createElement("a", "Download");
-  download.class("achievementsDownload");
+  let download = createElement("a", "Download Bild");
+  download.id("download-button");
+  download.class("download-button");
   download.attribute("href", ACHIEVEMENTPATHS[index]);
   download.attribute("download", "");
 }

@@ -40,7 +40,8 @@ ul, li {
 }
 
 li {
-    margin-left: 5%;
+    width: 90%;
+    margin-left: 0%;
 }
 
 hr {
@@ -114,6 +115,7 @@ img {
     height: 5%;
     position: fixed;
     bottom: 45%;
+    top: 15%;
 }
 
 .A_RIGHTBTN {
@@ -128,6 +130,22 @@ img {
     bottom: 0%;
     right: 0%;
     font-size: 2.5em;
+
+    color: black;
+    background-color: var(--color-background);
+    border-width: 0;
+
+}
+
+#download-button {
+    width: 40%;
+    height: 10%;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    bottom: 0%;
+    font-size: 2.5em;
+    text-align: center;
 
     color: black;
     background-color: var(--color-background);
@@ -203,6 +221,9 @@ img {
     background-color: lightgrey;
 }
 
-.achievement {
+#achievements {
     width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
 }

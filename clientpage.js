@@ -544,7 +544,8 @@ function drawCodeInput(dir, filler = "") {
     submit.mousePressed(() => {
       socket.emit("/api/client/joinSession", codeInput.value(), (response) => {
         if (response.status == "success") {
-          SESSIONID = codeInput.value();
+          SESSIONID = Math.floor(codeInput.value());
+          PLAYERID = 2;
           drawColorSelectionScreen();
         }
       });
@@ -553,7 +554,8 @@ function drawCodeInput(dir, filler = "") {
     codeInput.changed(() => {
       socket.emit("/api/client/joinSession", codeInput.value(), (response) => {
         if (response.status == "success") {
-          SESSIONID = codeInput.value();
+          SESSIONID = Math.floor(codeInput.value());
+          PLAYERID = 2;
           drawColorSelectionScreen();
         }
       });
@@ -600,6 +602,8 @@ function drawCodeInput(dir, filler = "") {
 }
 
 function drawGameControls() {
+  isInGame = true;
+  console.log("Session ID: " + SESSIONID);
   removeElements();
   let textString = "";
 
